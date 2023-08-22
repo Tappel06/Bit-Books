@@ -6,7 +6,6 @@ from login import Login
 from bookstore_dash import Bookstore_Dash
 
 
-
 # = = = = Run Program = = = = #
 
 # Keeps program in the loop, for if users logout, but keep application running

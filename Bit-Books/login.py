@@ -58,7 +58,7 @@ class Login():
                 shared_functions.clear_console()
                 # Prints store logo
                 shared_functions.print_store_logo()
-                print("\nLogin (The username or password is incorrect.) ")
+                print("\nLogin \x1b[31m(The username or password is incorrect.\x1b[0m) ")
         
 
 

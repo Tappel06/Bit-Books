@@ -14,7 +14,7 @@ class User_database():
         """Constructor"""
 
         # Checks wether "user_db" exists, then create a default DB if not
-        if user_db_exists() == False:
+        if self.user_db_exists() == False:
             # Creates directory if it does not exist
             if os.path.exists("Users") != True:
                 os.mkdir("Users")
@@ -45,7 +45,7 @@ class User_database():
                                 Password VARCHAR(15),
                                 Role VARCHAR(15),
                                 PRIMARY KEY (Id)
-                                )''')
+                                );''')
             self.db.commit()
         except Exception as e:
             self.db.rollback()
@@ -79,19 +79,17 @@ class User_database():
         return user_record
 
 
-# = = = = Functions = = = = #
-
-def user_db_exists():
-    """returns a True value if 'users_db' file exists"""
-    exists = False
-
-    try:
-        with open("Users/users_db", "r") as file:
-            exists = True
-    except Exception:
+    def user_db_exists(self):
+        """returns a True value if 'users_db' file exists"""
         exists = False
 
-    return exists
+        try:
+            with open("Users/users_db", "r") as file:
+                exists = True
+        except Exception:
+            exists = False
+
+        return exists
 
 
 
