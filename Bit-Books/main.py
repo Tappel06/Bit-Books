@@ -4,9 +4,13 @@
 # imports the login class
 from login import Login
 from bookstore_dash import Bookstore_Dash
+import shared_functions
 
 
 # = = = = Run Program = = = = #
+
+# animates opening
+shared_functions.opening_logo()
 
 # Keeps program in the loop, for if users logout, but keep application running
 while True:

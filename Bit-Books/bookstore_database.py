@@ -5,8 +5,6 @@ import sqlite3
 import os
 
 
-# = = = = Class = = = = #
-
 class Bookstore_database():
     '''This Class handles the connection to the ebookstore database'''
 
@@ -43,6 +41,7 @@ class Bookstore_database():
         self.cursor = self.db.cursor()
     
 
+    '''Contains all the methods for creating or deleting tables'''
     def create_Table(self):
         """Creates the default Users table"""
         try:
@@ -109,3 +108,75 @@ class Bookstore_database():
         # returns id as available id
         return id
 
+
+    def get_all_book_records(self):
+        """Gets all the book records in books table"""
+        try:
+            # Executes query
+            self.cursor.execute('''SELECT * FROM books''')
+            books = self.cursor.fetchall()
+            return books
+        except Exception as e:
+            raise e
+        
+
+    def search_by_title(self, title):
+        """Search the title field in books for a specific word"""
+        try:
+            # Executes query
+            self.cursor.execute(f'''SELECT * FROM books
+                                WHERE Title LIKE "%{title}%"''')
+            books = self.cursor.fetchall()
+            return books
+        except Exception as e:
+            raise e
+        
+
+    def search_by_author(self, author):
+        """Search the Author field in books for a specific word"""
+        try:
+            # Executes query
+            self.cursor.execute(f'''SELECT * FROM books
+                                WHERE Author LIKE "%{author}%"''')
+            books = self.cursor.fetchall()
+            return books
+        except Exception as e:
+            raise e
+        
+
+    def search_by_id(self, id):
+        """Search the Id field in books for a specific word"""
+        try:
+            # Executes query
+            self.cursor.execute('''SELECT * FROM books
+                                WHERE Id = ?''', (id,))
+            books = self.cursor.fetchall()
+            return books
+        except Exception as e:
+            raise e
+        
+    
+    def delete_book(self, id):
+        "Delete a book record from the books table"
+        try:
+            # Create delete querry
+            self.cursor.execute('''DELETE FROM books
+                                WHERE Id = ?''', (id,))
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+        
+
+    def update_book(self, id, title, author, quantity):
+        """Updates book record"""
+
+        try:
+            # Executes query
+            self.cursor.execute('''UPDATE books
+                                SET Title = ?, Author = ?, QTY = ?
+                                WHERE Id = ?''', (title, author, quantity, id))
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            raise e

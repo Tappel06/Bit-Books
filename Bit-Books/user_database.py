@@ -92,6 +92,89 @@ class User_database():
         return exists
 
 
+    def get_unassigned_id(self):
+        """Finds an ID that has not yet been assigned"""
+        # Starting point where to start searching for an available id
+        id = 2
+        while True:
+            
+            try:
+                self.cursor.execute('''SELECT * FROM users
+                                    WHERE Id = ?;''', (id,))
+                # Stores a record here that already matches with id
+                record = self.cursor.fetchall()
+                # If statement checking the length of record
+                if len(record) > 0:
+                    id += 1
+                else:
+                    break
+            except Exception as e:
+                raise e
+            
+        # returns id as available id
+        return id
 
 
+    def get_all_users(self):
+        "Gets all the users from users table"
+        
+        try: 
+            # Execute query
+            self.cursor.execute('''SELECT * FROM users;''')
+            # Stores all the record into a list
+            list = self.cursor.fetchall()
+            # Returns the list
+            return list
+        except Exception as e:
+            raise e
 
+
+    def delete_user_by_id(self, id):
+        """Deletes user by ID"""
+        try:
+            # Executes query
+            self.cursor.execute('''DELETE FROM users
+                                WHERE Id = ?;''', (id,))
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+        
+
+    def id_exists(self, id):
+        """Returns true if ID exists"""
+
+        # Boolean set as False
+        value = False
+        try:
+            # Execute query
+            self.cursor.execute('''SELECT * FROM users
+                                WHERE Id = ?;''', (id,))
+            # Gets list
+            list = self.cursor.fetchall()
+
+            # Checks if list is equal to on
+            if len(list) == 1:
+                # turns value to True
+                value = True
+                # Return Value
+                return value
+            else:
+                return value
+        except Exception as e:
+            raise e
+        
+    def print_answer(self, id):
+        try:
+            # Execute query
+            self.cursor.execute('''SELECT * FROM users
+                                WHERE Id = ?;''', (id,))
+            # Gets list
+            list = self.cursor.fetchall()
+            if len(list) == 1:
+                return True
+            else:
+                return False
+            
+        except Exception as e:
+            raise e
